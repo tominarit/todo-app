@@ -80,6 +80,7 @@ export const updateTodo = async (req: Request, res: Response) => {
       ...(dueDate && { dueDate: new Date(dueDate) }),
       ...(status && { status }),
       ...(status === 'completed' && { completedAt: new Date() }),
+      ...(status && status !== 'completed' && { completedAt: null }),
       updatedAt: new Date(),
     }).where(and(eq(todos.id, Number(id)), eq(todos.userId, user.id)))
       .returning();

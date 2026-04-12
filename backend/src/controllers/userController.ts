@@ -14,7 +14,7 @@ export const sync = async (req: Request, res: Response) => {
     if (user) {
       res.status(200).json(user);
     } else {
-      const newUser = await db.insert(users).values({ clerkUserId: userId! }).onConflictDoNothing().returning();
+      const [ newUser ] = await db.insert(users).values({ clerkUserId: userId! }).onConflictDoNothing().returning();
       res.status(201).json(newUser);
     }
   } catch (err){
