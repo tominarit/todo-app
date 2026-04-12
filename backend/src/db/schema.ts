@@ -14,7 +14,7 @@ export const users = pgTable('users', {
 
 export const todos = pgTable('todos', {
   id: serial('id').primaryKey(),
-  userId: integer('user_id').notNull().references(() => users.id), // Foreign key to users.id
+  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   title: varchar('title', { length: 255 }).notNull(),
   description: text('description'),
   status: statusEnum('status').notNull().default('pending'),
