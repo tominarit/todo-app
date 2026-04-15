@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router';
 import { useAuth } from '@clerk/react';
+import Navbar from './components/Navbar';
 import TodoList from './pages/TodoList';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
@@ -24,11 +25,14 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<ProtectedRoute><TodoList /></ProtectedRoute>} />
-      <Route path="/sign-in" element={<PublicRoute><SignIn /></PublicRoute>} />
-      <Route path="/sign-up" element={<PublicRoute><SignUp /></PublicRoute>} />
-    </Routes>
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<ProtectedRoute><TodoList /></ProtectedRoute>} />
+        <Route path="/sign-in" element={<PublicRoute><SignIn /></PublicRoute>} />
+        <Route path="/sign-up" element={<PublicRoute><SignUp /></PublicRoute>} />
+      </Routes>
+    </>
   )
 }
 
