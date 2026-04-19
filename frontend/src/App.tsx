@@ -1,9 +1,9 @@
 import { Routes, Route, Navigate } from 'react-router';
 import { useAuth } from '@clerk/react';
 import Navbar from './components/Navbar';
-import TodoList from './pages/TodoList';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
+import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage';
+import TodoListPage from './pages/TodoListPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isSignedIn, isLoaded } = useAuth();
@@ -25,15 +25,19 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 
 function App() {
   return (
-    <>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<ProtectedRoute><TodoList /></ProtectedRoute>} />
-        <Route path="/sign-in" element={<PublicRoute><SignIn /></PublicRoute>} />
-        <Route path="/sign-up" element={<PublicRoute><SignUp /></PublicRoute>} />
-      </Routes>
-    </>
+    <Routes>
+      <Route path="/" element={
+        <ProtectedRoute>
+          <>
+            <Navbar />
+            <TodoListPage />
+          </>
+        </ProtectedRoute>
+      } />
+      <Route path="/sign-in/*" element={<PublicRoute><SignInPage /></PublicRoute>} />
+      <Route path="/sign-up/*" element={<PublicRoute><SignUpPage /></PublicRoute>} />
+    </Routes>
   )
-}
+};
 
 export default App
