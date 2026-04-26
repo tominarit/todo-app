@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '@clerk/react'
 import { useQuery } from '@tanstack/react-query'
 import { apiFetch } from '../lib/api'
+import AddTodoForm from '../components/AddTodoForm'
 import TodoItem from '../components/TodoItem'
 import type { Todo } from '../types/todo'
 
@@ -27,6 +28,7 @@ export default function TodoListPage() {
   return (
     <div className="max-w-2xl mx-auto p-6 space-y-3">
       <h1 className="text-2xl font-bold">My Todos</h1>
+      <AddTodoForm />
       {todos?.map((todo: Todo) => (
         <TodoItem key={todo.id} todo={todo} />
       ))}
