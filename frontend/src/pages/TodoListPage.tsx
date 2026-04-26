@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '@clerk/react'
 import { useQuery } from '@tanstack/react-query'
 import { apiFetch } from '../lib/api'
+import type { Todo } from '../types/todo'
 
 export default function TodoListPage() {
 
@@ -24,7 +25,7 @@ export default function TodoListPage() {
 
   return (
     <div>
-      {todos?.map((todo: any) => (
+      {todos?.map((todo: Todo) => (
         <div key={todo.id}>{todo.title}</div>
       ))}
     </div>
