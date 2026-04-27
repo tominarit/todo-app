@@ -29,6 +29,7 @@ export default function TodoListPage() {
     <div className="max-w-2xl mx-auto p-6 space-y-3">
       <h1 className="text-2xl font-bold">My Todos</h1>
       <AddTodoForm />
+      { todos?.length === 0 && <span className="text-sm text-gray-400">There is no todo available.</span> }
       {todos?.map((todo: Todo) => (
         <TodoItem key={todo.id} todo={todo} />
       ))}
