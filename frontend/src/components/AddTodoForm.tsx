@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useAuth } from '@clerk/react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { apiFetch } from '../lib/api'
+import type { Todo } from '../types/todo'
 
 type Priority = 'low' | 'medium' | 'high'
 
@@ -17,14 +18,34 @@ export default function AddTodoForm() {
         method: 'POST',
         body: JSON.stringify({ title, priority }),
       }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] });
-      setTitle('');
-      setPriority('medium');
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: ['todos'] })
+      const previous = queryClient.getQueryData<Todo[]>(['todos'])
+      const optimisticTodo: Todo = {
+        id: Date.now(),
+        title,
+        priority,
+        status: 'pending',
+        description: null,
+        dueDate: null,
+        completedAt: null,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+      queryClient.setQueryData<Todo[]>(['todos'], (old) => [...(old ?? []), optimisticTodo])
+      return { previous }
+    },
+    onError: (_err, _vars, context) => {
+      queryClient.setQueryData(['todos'], context?.previous)
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['todos'] })
+      setTitle('')
+      setPriority('medium')
     },
   })
 
-  const handleSubmit = (e: React.SubmitEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!title.trim()) return
     createTodo();
