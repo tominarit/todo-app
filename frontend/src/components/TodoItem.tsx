@@ -57,16 +57,26 @@ export default function TodoItem({ todo }: Props) {
 
   return (
     <div className="flex items-center justify-between p-4 bg-white rounded-lg shadow-sm border">
-      <div className="flex items-center gap-3">
-        <input type="checkbox" checked={todo.status === 'completed'} onChange={() => toggleComplete()} />
+    <div className="flex items-center gap-3">
+      <input type="checkbox" checked={todo.status === 'completed'} onChange={() => toggleComplete()} />
+      <div className="flex flex-col">
         <span className={todo.status === 'completed' ? 'line-through text-gray-400' : ''}>
           {todo.title}
         </span>
+        {todo.description && (
+          <span className="text-sm text-gray-500">{todo.description}</span>
+        )}
       </div>
+    </div>
       <div className="flex items-center gap-2">
         {todo.priority && (
           <span className={`text-xs px-2 py-1 rounded-full font-medium ${priorityStyles[todo.priority]}`}>
             {todo.priority}
+          </span>
+        )}
+        {todo.dueDate && (
+          <span className="text-xs text-gray-500">
+            Due: {new Date(todo.dueDate).toLocaleDateString()}
           </span>
         )}
         <button onClick={() => deleteTodo()} className="text-red-400 hover:text-red-600 text-sm">Delete</button>
