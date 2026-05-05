@@ -2,7 +2,7 @@ const API_URL = import.meta.env.VITE_API_URL
 
 if (!API_URL) throw new Error('Add VITE_API_URL to your .env file')
 
-export async function apiFetch(path: string, getToken: () => Promise<string | null>, options: RequestInit = {}) {
+export async function apiFetch<T>(path: string, getToken: () => Promise<string | null>, options: RequestInit = {}): Promise<T | null> {
   const token = await getToken()
 
   const res = await fetch(`${API_URL}${path}`, {
@@ -20,5 +20,5 @@ export async function apiFetch(path: string, getToken: () => Promise<string | nu
   }
 
   if (res.status === 204) return null
-  return res.json()
+  return res.json() as Promise<T>;
 };
